@@ -10,21 +10,20 @@ async function copyDir(src, dest) {
             console.log("Error:", err);
         }
     });
-    await fsPromises.mkdir(dest, { recursive: true },
-        (err) => {
-            if (err) {
-                console.log(err)
-                return;
-            }
-        });
-    const entries = await fsPromises.readdir(src, { withFileTypes: true });
-    for (const entry of entries) {
-        if (entry.isFile()) {
+    await fsPromises.mkdir(dest, { recursive: true }, (err) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+    });
+    const files = await fsPromises.readdir(src, { withFileTypes: true });
+    for (const file of files) {
+        if (file.isFile()) {
             await fsPromises.copyFile(
-                path.join(src, entry.name),
-                path.join(dest, entry.name));
-        } else if (entry.isDirectory()) {
-            await copyDir(path.join(src, entry.name), path.join(dest, entry.name));
+                path.join(src, file.name),
+                path.join(dest, file.name));
+        } else if (file.isDirectory()) {
+            await copyDir(path.join(src, file.name), path.join(dest, file.name));
         }
     }
 }
