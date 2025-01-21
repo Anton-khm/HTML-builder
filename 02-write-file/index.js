@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const readline = require('node:readline');
 
-const writeStream = fs.createWriteStream(path.join(__dirname, 'file.txt'));
+const writeStream = fs.createWriteStream(path.join(__dirname, 'file.txt'), { flags: 'a' });
 
 const { stdin: input, stdout: output } = require('node:process');
 
@@ -15,7 +15,7 @@ rl.on('line', (text) => {
     text.includes('exit') ? rl.close() : writeStream.write(text + '\n')
 });
 
-rl.on('SIGCONT', () => {
+rl.on('SIGINT', () => {
     rl.close()
 });
 

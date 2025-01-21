@@ -3,12 +3,13 @@ const path = require("path");
 
 const secretPath = path.join(__dirname, "secret-folder");
 
-fs.readdir(secretPath, { withFileTypes: true }, (err, files) => {
+fs.readdir(secretPath, { withFileTypes: true }, (err, dirents) => {
     if (err) {
         console.log(err);
     } else {
-        files.forEach(file => {
-            if (file.isFile()) {
+        dirents.forEach(file => {
+            if (file.isDirectory()) return;
+            else {
                 const filePath = path.join(secretPath, file.name);
                 const fileName = path.parse(filePath).name;
                 const extension = path.parse(filePath).ext.slice(1);
@@ -20,6 +21,7 @@ fs.readdir(secretPath, { withFileTypes: true }, (err, files) => {
                     }
                 })
             }
-        })
+        }
+        )
     }
 });
